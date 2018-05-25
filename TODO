@@ -1,0 +1,112 @@
+Tables:
+
+  accounttransaction
+    - cpt_id
+    - cpc_id
+
+  avqfifoqueue
+
+  avqmessagerequest
+    - cgl_id
+    - amg_pickupdate
+    - amg_content.value('(//funding_request/order_no[1])', 'int')
+
+  avqmessageresponse
+    - amr_identifier
+
+  cbsaccountbalance
+
+  cbsaccountmovements
+
+  cbsclientdata
+
+  cbscustodyaccount
+    - cpt_id
+    - cca_importdate
+
+  cbscustodyaccountmovements
+    - ccm_transactionreference
+    - cpt_id
+    - ccm_portfolionumber (like '123456790.1234%')
+
+  cbspricedata
+    (Compare to securitiespricehistory)
+ 
+  contactgoal
+    - cgl_id
+    - cgl_isacashlimit
+    - cgl_isatotallimit
+    - cgl_isastockshareslimit
+
+  contectinterface (» Link DFS - AVQ «)
+    - cti_externalid -> key of person in Avaloq
+
+  contactportfolio (»avaloq containter« ?)
+
+  contactportfoliochange
+    - cpt_id
+    - cpc_id
+    - cpt_custodyaccount -> left(cpt_custodyaccount, 8) seems to be avq businessperson_id
+
+  contactportfoliochangedetail (Figures for dashboard ?)
+
+  contactportfoliodetail
+    - cpd_id
+    - cpt_id
+    - cpd_investmentamount
+    - cpd_allocation
+    - cpd_sharesamount
+
+  contactportfoliodetailtogoal
+    - cpd_id
+    - cgl_id
+    -> See also sp_pms_syncInvestment
+
+  currency
+
+  eodimport
+   - eod_import_date
+
+  executionreport
+    - ect_custodyaccountnumber
+    - ect_avqorderid
+    - cpc_id
+    - ect_id
+  
+  funding
+    - fnd_startdate / fnd_enddate
+    - fnd_active
+    - fdt_id: 2: Monthly contribution
+
+  paymentaccount
+
+
+  portfolioprc
+
+  securities
+
+  securitiespricehistory
+    (Compare to cbspricedata)
+
+  securitiespricehistory
+
+  validpaymentaccounttypes
+
+
+Joins
+  accounttransaction         avqmessagerequest      (at.tra_id = amg.amg_content.value('(//funding_request/ORDER_NO)[1]', 'int') = at.tra_id
+  accounttransaction fnd_id  funding
+  avqmessagerequest          avqmessageresponse       amr_identifier = amg_identifier
+  contactgoal        cct_it  contactinterface
+  contactgoal        cgl_id  funding
+  contactgoal        sct_id  securities
+  contactgoal        act_id  contactportfoliochangedetail
+
+
+Procedures
+
+  sp_pms_GetGoalTransactions      @contactId,  @goalId
+  sp_pms_GetGoalsByContactId       42
+  sp_pms_GetISAMACCTransactions   @cct_id=...           // * with M ? * //
+  sp_pms_getRemainingIsaAllowance  42
+  sp_pms_syncInvestments                                // * Trigger recalc contactportfoliodetailtogoal */
