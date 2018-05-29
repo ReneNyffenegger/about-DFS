@@ -38,6 +38,8 @@ Tables:
     - cgl_isatotallimit
     - cgl_isastockshareslimit
 
+    - cct_id
+
   contectinterface (» Link DFS - AVQ «)
     - cti_externalid -> key of person in Avaloq
 
