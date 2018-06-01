@@ -40,7 +40,7 @@ Tables:
 
     - cct_id
 
-  contectinterface (» Link DFS - AVQ «)
+  contactinterface (» Link DFS - AVQ «)
     - cti_externalid -> key of person in Avaloq
 
   contactportfolio (»avaloq containter« ?)
